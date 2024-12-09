@@ -19,6 +19,11 @@ class CashierController extends GetxController {
         amount: totalPrice.value,
       );
       Get.find<DashboardController>().addSale(sale);
+      Get.snackbar(
+        'Transaksi Berhasil', 
+        'Total: Rp ${totalPrice.toStringAsFixed(2)}',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       products.clear();
       totalPrice.value = 0.0;
     }

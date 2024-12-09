@@ -13,7 +13,13 @@ class CashierView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Kasir')),
+      appBar: AppBar(
+        title: Text(
+          'Kasir',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
+      ),
       drawer: Sidebar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -21,11 +27,26 @@ class CashierView extends StatelessWidget {
           children: [
             TextField(
               controller: nameController,
-              decoration: InputDecoration(labelText: 'Nama Produk'),
+              decoration: InputDecoration(
+                labelText: 'Nama Produk',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.shopping_cart),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+              ),
             ),
+            SizedBox(height: 10),
             TextField(
               controller: priceController,
-              decoration: InputDecoration(labelText: 'Harga Produk'),
+              decoration: InputDecoration(
+                labelText: 'Harga Produk',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.attach_money),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+              ),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20),
@@ -37,25 +58,50 @@ class CashierView extends StatelessWidget {
                 );
                 controller.addProduct(product);
               },
-              child: Text('Tambah Produk'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                textStyle: TextStyle(fontSize: 16, color: Colors.white),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Tambah Produk', style: TextStyle(color: Colors.white)),
             ),
+            SizedBox(height: 20),
             Obx(() => Expanded(
               child: ListView.builder(
                 itemCount: controller.products.length,
                 itemBuilder: (_, index) {
                   final product = controller.products[index];
-                  return ListTile(
-                    title: Text(product.name),
-                    trailing: Text('Rp${product.price}'),
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: ListTile(
+                      title: Text(product.name),
+                      trailing: Text('Rp${product.price}'),
+                    ),
                   );
                 },
               ),
             )),
-            Obx(() => Text('Total Price: Rp${controller.totalPrice}')),
-            SizedBox(height: 20),
+            Obx(() => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                'Total: Rp${controller.totalPrice}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            )),
             ElevatedButton(
               onPressed: controller.completeTransaction,
-              child: Text('Selesaikan Transaksi'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                textStyle: TextStyle(fontSize: 16, color: Colors.white),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Selesaikan Transaksi', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
