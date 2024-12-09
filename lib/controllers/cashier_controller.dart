@@ -1,34 +1,26 @@
 import 'package:get/get.dart';
 import '../models/product_model.dart';
+import '../models/sales_model.dart';
+import 'dashboard_controller.dart';
 
 class CashierController extends GetxController {
-  final RxList<Product> products = <Product>[].obs;
-  final RxString productName = ''.obs;
-  final RxDouble productPrice = 0.0.obs;
+  var products = <Product>[].obs;
+  var totalPrice = 0.0.obs;
 
-  void addProduct() {
-    if (productName.value.isNotEmpty && productPrice.value > 0) {
-      products.add(Product(
-        name: productName.value, 
-        price: productPrice.value
-      ));
-      productName.value = '';
-      productPrice.value = 0.0;
-    }
-  }
-
-  double getTotalPrice() {
-    return products.fold(0, (total, product) => total + product.price);
+  void addProduct(Product product) {
+    products.add(product);
+    totalPrice.value += product.price;
   }
 
   void completeTransaction() {
     if (products.isNotEmpty) {
-      Get.snackbar(
-        'Transaksi Berhasil', 
-        'Total: Rp ${getTotalPrice().toStringAsFixed(2)}',
-        snackPosition: SnackPosition.BOTTOM,
+      final sale = Sale(
+        date: DateTime.now(),
+        amount: totalPrice.value,
       );
+      Get.find<DashboardController>().addSale(sale);
       products.clear();
+      totalPrice.value = 0.0;
     }
   }
 }

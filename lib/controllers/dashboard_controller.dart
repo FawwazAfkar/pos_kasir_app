@@ -1,22 +1,25 @@
 import 'package:get/get.dart';
+import '../models/sales_model.dart';
 
 class DashboardController extends GetxController {
-  final RxDouble todaySales = 0.0.obs;
-  final RxInt totalTransactions = 0.obs;
+  var sales = <Sale>[].obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchSalesSummary();
+  void addSale(Sale sale) {
+    sales.add(sale);
+    updateSalesSummary();
   }
 
-  void fetchSalesSummary() {
-    // Simulasi pengambilan data penjualan
-    todaySales.value = 5000000.0;
-    totalTransactions.value = 45;
+  void updateSalesSummary() {
+    // Calculate total sales and transactions
+    double totalSales = 0;
+    int totalTransactions = sales.length;
+    for (var sale in sales) {
+      totalSales += sale.amount;
+    }
+    this.totalSales.value = totalSales;
+    this.totalTransactions.value = totalTransactions;
   }
 
-  void logout() {
-    Get.offNamed('/login');
-  }
+  var totalSales = 0.0.obs;
+  var totalTransactions = 0.obs;
 }

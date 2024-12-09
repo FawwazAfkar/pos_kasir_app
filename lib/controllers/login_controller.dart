@@ -1,22 +1,21 @@
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  final RxString username = ''.obs;
-  final RxString password = ''.obs;
-  final RxBool isLoading = false.obs;
-  final RxString errorMessage = ''.obs;
+  var username = ''.obs;
+  var password = ''.obs;
+  var errorMessage = ''.obs;
 
   void login() {
-    isLoading.value = true;
-    errorMessage.value = '';
-
-    // Simulasi login
-    if (username.value == 'admin' && password.value == 'password') {
-      Get.offNamed('/dashboard');
-    } else {
-      errorMessage.value = 'Username atau password salah';
+    if (username.value.isEmpty || password.value.isEmpty) {
+      errorMessage.value = 'Username and Password cannot be empty';
+      return;
     }
-    
-    isLoading.value = false;
+
+    // Mock login validation
+    if (username.value == 'admin' && password.value == 'password') {
+      Get.toNamed('/dashboard');
+    } else {
+      errorMessage.value = 'Invalid Username or Password';
+    }
   }
 }
